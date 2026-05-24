@@ -1,703 +1,281 @@
-<!-- Fit Fut Suscripciones Dashboard v5 - CSV con fórmulas resueltas -->
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fit Fut · Dashboards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0a1628;
+      --navy-light: #142442;
+      --blue: #3b82f6;
+      --blue-light: #60a5fa;
+      --blue-dark: #2563eb;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --border: #e5e9f2;
+      --text: #0a1628;
+      --text-muted: #64748b;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
 
-  :root {
-    --navy: #0a1628;
-    --navy-light: #142442;
-    --blue: #3b82f6;
-    --blue-light: #60a5fa;
-    --blue-dark: #2563eb;
-    --bg: #f5f7fb;
-    --card: #ffffff;
-    --border: #e5e9f2;
-    --text: #0a1628;
-    --text-muted: #64748b;
-    --green: #10b981;
-    --red: #ef4444;
-    --amber: #f59e0b;
-    --gray-50: #f8fafc;
-  }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-  .ff-app {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 24px;
-  }
+    .ff-header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: white;
+      padding: 40px 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ff-header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ff-header::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: 20%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ff-header-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+    .ff-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 3px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .ff-logo span { color: var(--blue-light); }
+    .ff-header-sub {
+      font-size: 13px;
+      opacity: 0.6;
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+    }
+    .ff-header-meta {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .ff-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .ff-meta-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(16,185,129,0.6);
+    }
 
-  .ff-header {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-    color: white;
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .ff-header::after {
-    content: '';
-    position: absolute;
-    top: -50%; right: -10%;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .ff-header h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
-    letter-spacing: 2px;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .ff-header h1 span { color: var(--blue-light); }
-  .ff-header p { font-size: 13px; opacity: 0.7; letter-spacing: 0.5px; }
-  .ff-header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-  .ff-actions { display: flex; gap: 8px; z-index: 1; position: relative; flex-wrap: wrap; }
-  .ff-btn {
-    background: var(--blue); color: white; border: none;
-    padding: 10px 18px; border-radius: 8px;
-    font-family: 'Montserrat', sans-serif; font-weight: 600;
-    font-size: 12px; letter-spacing: 0.5px; cursor: pointer;
-    text-transform: uppercase; transition: all 0.2s;
-  }
-  .ff-btn:hover { background: var(--blue-dark); }
-  .ff-btn.secondary { background: rgba(255,255,255,0.1); }
-  .ff-btn.debug { background: var(--amber); }
+    .ff-main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 36px 40px;
+    }
 
-  .ff-debug {
-    background: #1a1a2e; color: #e0e0e0;
-    border-radius: 12px; padding: 20px; margin-bottom: 20px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    max-height: 600px; overflow: auto; line-height: 1.6;
-  }
-  .ff-debug h3 {
-    color: var(--amber); font-size: 13px; margin-bottom: 8px;
-    font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;
-  }
-  .ff-debug .ok { color: #10b981; }
-  .ff-debug .bad { color: #ef4444; }
-  .ff-debug .key { color: var(--blue-light); }
-  .ff-debug pre { white-space: pre-wrap; word-break: break-all; background: #0f0f1f; padding: 8px; border-radius: 4px; }
-  .ff-debug table { width: 100%; border-collapse: collapse; font-size: 10px; margin-top: 8px; }
-  .ff-debug td, .ff-debug th { padding: 4px 8px; border-bottom: 1px solid #333; text-align: left; }
-  .ff-debug th { color: var(--amber); }
+    .ff-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
 
-  .ff-setup {
-    background: var(--card); border-radius: 16px; padding: 32px;
-    margin-bottom: 20px; border: 2px dashed var(--blue);
-  }
-  .ff-setup h2 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1.5px; color: var(--navy); margin-bottom: 8px; }
-  .ff-setup p { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
-  .ff-setup-form { display: flex; gap: 8px; flex-wrap: wrap; }
-  .ff-setup-form input {
-    flex: 1; min-width: 280px; padding: 12px 16px;
-    border: 1px solid var(--border); border-radius: 8px;
-    font-family: 'Montserrat', sans-serif; font-size: 13px;
-  }
-  .ff-setup-form button {
-    background: var(--navy); color: white; border: none;
-    padding: 12px 24px; border-radius: 8px;
-    font-family: 'Montserrat', sans-serif; font-weight: 600;
-    font-size: 13px; cursor: pointer; text-transform: uppercase;
-  }
+    .ff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
 
-  .ff-filters {
-    background: var(--card); border-radius: 16px; padding: 20px 24px;
-    margin-bottom: 20px; display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px; border: 1px solid var(--border);
-  }
-  .ff-filter label {
-    display: block; font-size: 10px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--text-muted); margin-bottom: 6px;
-  }
-  .ff-filter select, .ff-filter input {
-    width: 100%; padding: 10px 12px;
-    border: 1px solid var(--border); border-radius: 8px;
-    font-family: 'Montserrat', sans-serif; font-size: 13px; background: white;
-  }
+    .ff-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .ff-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--blue);
+      border-radius: 4px 0 0 4px;
+    }
+    .ff-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(10,22,40,0.1);
+      border-color: var(--blue);
+    }
+    .ff-card-icon {
+      width: 48px; height: 48px;
+      background: rgba(59,130,246,0.1);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .ff-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1.5px;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .ff-card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .ff-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ff-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ff-badge.active {
+      background: rgba(16,185,129,0.12);
+      color: #059669;
+    }
+    .ff-badge.active::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+    .ff-badge.soon {
+      background: rgba(245,158,11,0.1);
+      color: #d97706;
+    }
+    .ff-card-arrow {
+      width: 32px; height: 32px;
+      background: var(--navy);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: white;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .ff-card:hover .ff-card-arrow { background: var(--blue); }
 
-  .ff-kpis {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px; margin-bottom: 20px;
-  }
-  .ff-kpi {
-    background: var(--card); border-radius: 12px; padding: 20px;
-    border: 1px solid var(--border); position: relative; overflow: hidden;
-  }
-  .ff-kpi::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-    width: 4px; background: var(--blue);
-  }
-  .ff-kpi.deuda::before { background: var(--red); }
-  .ff-kpi.pagado::before { background: var(--green); }
-  .ff-kpi.pendiente::before { background: var(--amber); }
-  .ff-kpi-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--text-muted); font-weight: 700; margin-bottom: 8px;
-  }
-  .ff-kpi-value {
-    font-family: 'Bebas Neue', sans-serif; font-size: 32px;
-    color: var(--navy); line-height: 1; letter-spacing: 1px;
-  }
-  .ff-kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .ff-card.coming-soon {
+      opacity: 0.55;
+      cursor: default;
+      pointer-events: none;
+    }
+    .ff-card.coming-soon::before { background: var(--border); }
 
-  .ff-section {
-    background: var(--card); border-radius: 16px; margin-bottom: 20px;
-    overflow: hidden; border: 1px solid var(--border);
-  }
-  .ff-section-header {
-    padding: 18px 24px; border-bottom: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center;
-    background: var(--gray-50);
-  }
-  .ff-section-header h2 {
-    font-family: 'Bebas Neue', sans-serif; font-size: 22px;
-    letter-spacing: 1.5px; color: var(--navy);
-  }
-  .ff-count {
-    background: var(--navy); color: white; padding: 4px 12px;
-    border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  }
-  .ff-table-wrap { overflow-x: auto; max-height: 500px; overflow-y: auto; }
-  table.ff-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .ff-table thead th {
-    position: sticky; top: 0; background: white; color: var(--text-muted);
-    text-align: left; padding: 12px 16px; font-size: 10px;
-    text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
-    border-bottom: 2px solid var(--border); cursor: pointer; user-select: none;
-    white-space: nowrap;
-  }
-  .ff-table tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  .ff-table tbody tr:hover { background: var(--gray-50); }
-  .ff-table tbody tr.has-deuda { background: rgba(239, 68, 68, 0.04); }
-  .ff-table tbody tr.has-pendiente { background: rgba(245, 158, 11, 0.04); }
-  .ff-num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
-  .ff-num.red { color: var(--red); }
-  .ff-num.green { color: var(--green); }
-  .ff-num.amber { color: var(--amber); }
-  .ff-name { font-weight: 600; color: var(--navy); }
+    .ff-footer {
+      text-align: center;
+      padding: 24px 40px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
 
-  .ff-status {
-    display: inline-block; padding: 3px 10px; border-radius: 12px;
-    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .ff-status.SIGUE { background: rgba(16, 185, 129, 0.12); color: #059669; }
-  .ff-status.RETOMA { background: rgba(59, 130, 246, 0.12); color: var(--blue-dark); }
-  .ff-status.BAJA { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
-  .ff-status.DIA { background: rgba(245, 158, 11, 0.12); color: #d97706; }
-  .ff-status.NULL { background: rgba(100, 116, 139, 0.12); color: var(--text-muted); }
-
-  .ff-tfoot td {
-    background: var(--navy); color: white; padding: 14px 16px;
-    font-weight: 700; border: none;
-  }
-  .ff-tfoot td.label { text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
-  .ff-empty { padding: 40px; text-align: center; color: var(--text-muted); font-size: 13px; }
-  .ff-error {
-    background: rgba(239, 68, 68, 0.08); border: 1px solid var(--red);
-    color: #b91c1c; padding: 16px 20px; border-radius: 12px;
-    margin-bottom: 16px; font-size: 13px;
-  }
-  .ff-loading {
-    text-align: center; padding: 60px; color: var(--text-muted); font-size: 14px;
-  }
-  .ff-loading::after {
-    content: ''; display: inline-block; width: 16px; height: 16px;
-    border: 2px solid var(--border); border-top-color: var(--blue);
-    border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 10px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .ff-info { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
-  .ff-hidden { display: none !important; }
-</style>
-
-<div class="ff-app">
   <div class="ff-header">
-    <div class="ff-header-row">
-      <div>
-        <h1>FIT FUT <span>// SUSCRIPCIONES</span></h1>
-        <p>Dashboard interactivo · Datos en vivo desde Google Sheets</p>
-      </div>
-      <div class="ff-actions">
-        <button class="ff-btn debug" id="ff-debug-btn">Debug</button>
-        <button class="ff-btn secondary" id="ff-config-btn">Cambiar Sheet</button>
-        <button class="ff-btn" id="ff-refresh-btn">Actualizar</button>
+    <div class="ff-header-inner">
+      <div class="ff-logo">FIT FUT <span>// DASHBOARDS</span></div>
+      <p class="ff-header-sub">Panel de control · Academia de fútbol</p>
+      <div class="ff-header-meta">
+        <div class="ff-meta-item">
+          <div class="ff-meta-dot"></div>
+          Conectado a Google Sheets
+        </div>
+        <div class="ff-meta-item">
+          Datos en tiempo real
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="ff-debug ff-hidden" id="ff-debug"></div>
+  <div class="ff-main">
+    <div class="ff-section-title">Dashboards disponibles</div>
 
-  <div class="ff-setup ff-hidden" id="ff-setup">
-    <h2>Conectar Google Sheet</h2>
-    <p>Pegá el link normal del Sheet (estando en la pestaña que querés ver).</p>
-    <div class="ff-setup-form">
-      <input type="text" id="ff-sheet-url" placeholder="https://docs.google.com/spreadsheets/d/..." />
-      <button id="ff-connect-btn">Conectar</button>
+    <div class="ff-grid">
+
+      <a href="suscripciones.html" class="ff-card">
+        <div class="ff-card-icon">📋</div>
+        <div class="ff-card-title">Suscripciones</div>
+        <div class="ff-card-desc">
+          Jugadores activos, deudas, pagos y montos pendientes por grupo de entreno.
+        </div>
+        <div class="ff-card-footer">
+          <span class="ff-badge active">Activo</span>
+          <div class="ff-card-arrow">→</div>
+        </div>
+      </a>
+
+      <div class="ff-card coming-soon">
+        <div class="ff-card-icon">📅</div>
+        <div class="ff-card-title">Asistencias</div>
+        <div class="ff-card-desc">
+          Control de asistencia por jugador, grupo y período.
+        </div>
+        <div class="ff-card-footer">
+          <span class="ff-badge soon">Próximamente</span>
+        </div>
+      </div>
+
+      <div class="ff-card coming-soon">
+        <div class="ff-card-icon">💰</div>
+        <div class="ff-card-title">Ingresos</div>
+        <div class="ff-card-desc">
+          Resumen financiero, cobros del mes y proyección de ingresos.
+        </div>
+        <div class="ff-card-footer">
+          <span class="ff-badge soon">Próximamente</span>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div id="ff-error-box"></div>
-
-  <div id="ff-dashboard" class="ff-hidden">
-    <div class="ff-filters">
-      <div class="ff-filter"><label>Mes (B)</label><select id="ff-f-mes"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Proyecto</label><select id="ff-f-proyecto"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Status</label><select id="ff-f-status"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Tipo Suscripción</label><select id="ff-f-tipo"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Buscar nombre</label><input type="text" id="ff-f-search" placeholder="Ej: Yohana" /></div>
-    </div>
-
-    <div class="ff-kpis">
-      <div class="ff-kpi"><div class="ff-kpi-label">Total registros</div><div class="ff-kpi-value" id="kpi-total">0</div><div class="ff-kpi-sub" id="kpi-total-sub"></div></div>
-      <div class="ff-kpi pagado"><div class="ff-kpi-label">Total pagado</div><div class="ff-kpi-value" id="kpi-pagado">Q0</div></div>
-      <div class="ff-kpi pendiente"><div class="ff-kpi-label">Monto pendiente</div><div class="ff-kpi-value" id="kpi-pendiente">Q0</div></div>
-      <div class="ff-kpi deuda"><div class="ff-kpi-label">Deuda acumulada</div><div class="ff-kpi-value" id="kpi-deuda">Q0</div></div>
-    </div>
-
-    <div class="ff-section">
-      <div class="ff-section-header"><h2>Jugadores</h2><span class="ff-count" id="ff-count-jugadores">0</span></div>
-      <div class="ff-table-wrap">
-        <table class="ff-table" id="ff-table-jugadores">
-          <thead><tr>
-            <th data-sort="NOMBRE">Nombre</th>
-            <th data-sort="TIPO_SUSCRIPCION">Tipo Suscripción</th>
-            <th data-sort="PROYECTO">Proyecto</th>
-            <th data-sort="FECHA_REINSCRIPCION">Re-Inscripción</th>
-            <th data-sort="Status">Status</th>
-            <th data-sort="DEUDA" class="ff-num">Deuda</th>
-            <th data-sort="TOTAL_PAGADO" class="ff-num">Pagado</th>
-            <th data-sort="MONTO_PENDIENTE" class="ff-num">Pendiente</th>
-          </tr></thead>
-          <tbody id="ff-tbody-jugadores"></tbody>
-          <tfoot id="ff-tfoot-jugadores"></tfoot>
-        </table>
-      </div>
-    </div>
-
-    <div class="ff-section">
-      <div class="ff-section-header"><h2>Porter@s</h2><span class="ff-count" id="ff-count-porteros">0</span></div>
-      <div class="ff-table-wrap">
-        <table class="ff-table" id="ff-table-porteros">
-          <thead><tr>
-            <th data-sort="NOMBRE">Nombre</th>
-            <th data-sort="TIPO_SUSCRIPCION">Tipo Suscripción</th>
-            <th data-sort="PROYECTO">Proyecto</th>
-            <th data-sort="FECHA_REINSCRIPCION">Re-Inscripción</th>
-            <th data-sort="Status">Status</th>
-            <th data-sort="DEUDA" class="ff-num">Deuda</th>
-            <th data-sort="TOTAL_PAGADO" class="ff-num">Pagado</th>
-            <th data-sort="MONTO_PENDIENTE" class="ff-num">Pendiente</th>
-          </tr></thead>
-          <tbody id="ff-tbody-porteros"></tbody>
-          <tfoot id="ff-tfoot-porteros"></tfoot>
-        </table>
-      </div>
-    </div>
-
-    <p class="ff-info" id="ff-last-update"></p>
+  <div class="ff-footer">
+    Fit Fut · Sistema de dashboards internos
   </div>
 
-  <div id="ff-loading" class="ff-loading ff-hidden">Cargando datos del Sheet</div>
-</div>
-
-<script>
-(function() {
-  const STORAGE_KEY = 'fitfut_sheet_config_v5';
-  let allData = [];
-  let debugInfo = {};
-  let sortState = { jugadores: { key: null, dir: 1 }, porteros: { key: null, dir: 1 } };
-  let currentConfig = null;
-
-  function normalize(s) {
-    return (s || '').toString().trim().toUpperCase().replace(/\s+/g, ' ');
-  }
-
-  function toNum(v) {
-    if (v === null || v === undefined || v === '') return 0;
-    if (typeof v === 'number') return isNaN(v) ? 0 : v;
-    const cleaned = String(v).replace(/[^0-9.\-]/g, '');
-    const n = parseFloat(cleaned);
-    return isNaN(n) ? 0 : n;
-  }
-
-  function fmtQ(n) { return 'Q' + Math.round(n).toLocaleString('en-US'); }
-
-  function escapeHtml(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  function parseSheetUrl(url) {
-    const idMatch = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-    if (!idMatch) return null;
-    const id = idMatch[1];
-    let gid = '0';
-    const gidMatch = url.match(/[#&?]gid=(\d+)/);
-    if (gidMatch) gid = gidMatch[1];
-    return { id, gid };
-  }
-
-  // CSV parser - handles quoted fields with commas/newlines inside
-  function parseCSV(text) {
-    const rows = [];
-    let row = [], field = '', inQuotes = false;
-    for (let i = 0; i < text.length; i++) {
-      const c = text[i], next = text[i+1];
-      if (inQuotes) {
-        if (c === '"' && next === '"') { field += '"'; i++; }
-        else if (c === '"') { inQuotes = false; }
-        else { field += c; }
-      } else {
-        if (c === '"') { inQuotes = true; }
-        else if (c === ',') { row.push(field); field = ''; }
-        else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
-        else if (c === '\r') { /* skip */ }
-        else { field += c; }
-      }
-    }
-    if (field !== '' || row.length > 0) { row.push(field); rows.push(row); }
-    return rows;
-  }
-
-  async function loadData(config) {
-    const loading = document.getElementById('ff-loading');
-    const dash = document.getElementById('ff-dashboard');
-    const errBox = document.getElementById('ff-error-box');
-    errBox.innerHTML = '';
-    loading.classList.remove('ff-hidden');
-    dash.classList.add('ff-hidden');
-    debugInfo = { config: config };
-
-    try {
-      // CSV export endpoint - resuelve fórmulas y devuelve valores calculados
-      const url = 'https://docs.google.com/spreadsheets/d/' + config.id + '/export?format=csv&gid=' + config.gid;
-      debugInfo.url = url;
-
-      const res = await fetch(url);
-      if (!res.ok) {
-        // Si export falla (Sheet no público para export), intentar gviz como fallback
-        throw new Error('HTTP ' + res.status + ' al exportar CSV. Verificá que el Sheet esté compartido como "Cualquier persona con el enlace puede ver".');
-      }
-
-      const text = await res.text();
-      const rows = parseCSV(text);
-      debugInfo.totalRows = rows.length;
-      debugInfo.totalCols = rows[0] ? rows[0].length : 0;
-
-      if (rows.length === 0) throw new Error('CSV vacío.');
-
-      // Find header row - busca fila con NOMBRE y algo con TIPO+JUGADOR
-      let headerRowIdx = -1;
-      let headers = [];
-      for (let i = 0; i < Math.min(20, rows.length); i++) {
-        const r = rows[i];
-        if (!r) continue;
-        const cells = r.map(c => normalize(c));
-        const hasNombre = cells.includes('NOMBRE');
-        const hasTipoJugador = cells.some(c => c && c.includes('TIPO') && c.includes('JUGADOR'));
-        if (hasNombre && hasTipoJugador) {
-          headerRowIdx = i;
-          headers = cells;
-          break;
-        }
-      }
-
-      debugInfo.headerRowIdx = headerRowIdx;
-      debugInfo.headers = headers;
-
-      if (headerRowIdx === -1) {
-        debugInfo.first5Rows = rows.slice(0, 5);
-        throw new Error('No se encontró fila de headers. Click en Debug.');
-      }
-
-      const colIdx = (...names) => {
-        for (const n of names) {
-          const target = normalize(n);
-          const targetNoSpace = target.replace(/\s+/g,'');
-          const idx = headers.findIndex(h => h === target || h.replace(/\s+/g,'') === targetNoSpace);
-          if (idx !== -1) return idx;
-        }
-        return -1;
-      };
-
-      const idx = {
-        B: colIdx('B'),
-        NOMBRE: colIdx('NOMBRE'),
-        TIPO_JUGADOR: colIdx('TIPO JUGADOR', 'TIPOJUGADOR'),
-        TIPO_SUSCRIPCION: colIdx('TIPO SUSCRIPCION', 'TIPOSUSCRIPCION'),
-        PROYECTO: colIdx('PROYECTO'),
-        FECHA_REINSCRIPCION: colIdx('FECHA RE- INSCRIPCION', 'FECHA RE-INSCRIPCION', 'FECHA REINSCRIPCION', 'FECHA RE INSCRIPCION'),
-        STATUS: colIdx('STATUS'),
-        DEUDA: colIdx('DEUDA'),
-        TOTAL_PAGADO: colIdx('TOTAL PAGADO', 'TOTALPAGADO'),
-        MONTO_PENDIENTE: colIdx('MONTO PENDIENTE', 'MONTOPENDIENTE')
-      };
-
-      debugInfo.columnMapping = idx;
-
-      const samples = [];
-      allData = [];
-      for (let i = headerRowIdx + 1; i < rows.length; i++) {
-        const r = rows[i];
-        if (!r) continue;
-        const getCell = (cIdx) => (cIdx >= 0 && cIdx < r.length) ? (r[cIdx] || '').trim() : '';
-
-        const nombre = getCell(idx.NOMBRE);
-        if (!nombre) continue;
-        const proyecto = getCell(idx.PROYECTO);
-        if (!proyecto) continue;
-
-        const item = {
-          B: getCell(idx.B),
-          NOMBRE: nombre,
-          TIPO_JUGADOR: normalize(getCell(idx.TIPO_JUGADOR)),
-          TIPO_SUSCRIPCION: getCell(idx.TIPO_SUSCRIPCION),
-          PROYECTO: proyecto,
-          FECHA_REINSCRIPCION: getCell(idx.FECHA_REINSCRIPCION),
-          Status: getCell(idx.STATUS),
-          DEUDA: toNum(getCell(idx.DEUDA)),
-          TOTAL_PAGADO: toNum(getCell(idx.TOTAL_PAGADO)),
-          MONTO_PENDIENTE: toNum(getCell(idx.MONTO_PENDIENTE))
-        };
-
-        if (samples.length < 3 || nombre.toLowerCase().includes('dolman')) {
-          samples.push({
-            nombre: nombre,
-            B: item.B,
-            rawDeuda: getCell(idx.DEUDA),
-            rawPagado: getCell(idx.TOTAL_PAGADO),
-            rawPendiente: getCell(idx.MONTO_PENDIENTE),
-            parsed: { DEUDA: item.DEUDA, TOTAL_PAGADO: item.TOTAL_PAGADO, MONTO_PENDIENTE: item.MONTO_PENDIENTE }
-          });
-        }
-
-        allData.push(item);
-      }
-
-      debugInfo.samples = samples;
-      debugInfo.totalRecords = allData.length;
-      debugInfo.totalSumPagado = allData.reduce((s,d) => s + d.TOTAL_PAGADO, 0);
-
-      if (allData.length === 0) throw new Error('No se encontraron filas válidas.');
-
-      currentConfig = config;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-      document.getElementById('ff-setup').classList.add('ff-hidden');
-      populateFilters();
-      render();
-      updateDebugView();
-      dash.classList.remove('ff-hidden');
-
-      const now = new Date();
-      document.getElementById('ff-last-update').innerHTML =
-        '<strong>' + allData.length + ' registros</strong> · ' + fmtQ(debugInfo.totalSumPagado) +
-        ' pagado total · Última actualización: ' + now.toLocaleString('es-GT') + ' · gid=' + config.gid;
-    } catch (e) {
-      errBox.innerHTML = '<div class="ff-error"><strong>Error:</strong> ' + escapeHtml(e.message) + '</div>';
-      document.getElementById('ff-setup').classList.remove('ff-hidden');
-      updateDebugView();
-    } finally {
-      loading.classList.add('ff-hidden');
-    }
-  }
-
-  function updateDebugView() {
-    const el = document.getElementById('ff-debug');
-    if (!debugInfo || Object.keys(debugInfo).length === 0) {
-      el.innerHTML = '<h3>Debug</h3><p>No hay datos cargados.</p>';
-      return;
-    }
-
-    let html = '<h3>Diagnóstico (v5 - CSV)</h3>';
-    html += '<p><span class="key">URL fetch:</span> <span style="color:#aaa">' + escapeHtml(debugInfo.url || '?') + '</span></p>';
-    html += '<p><span class="key">Total filas:</span> ' + (debugInfo.totalRows || 0) + '</p>';
-    html += '<p><span class="key">Total columnas:</span> ' + (debugInfo.totalCols || 0) + '</p>';
-    html += '<p><span class="key">Fila headers:</span> ' + (debugInfo.headerRowIdx >= 0 ? '<span class="ok">índice ' + debugInfo.headerRowIdx + '</span>' : '<span class="bad">NO ENCONTRADA</span>') + '</p>';
-    html += '<p><span class="key">Total registros:</span> ' + (debugInfo.totalRecords || 0) + '</p>';
-    html += '<p><span class="key">Suma total pagado:</span> ' + fmtQ(debugInfo.totalSumPagado || 0) + '</p>';
-
-    if (debugInfo.headers && debugInfo.headers.length) {
-      html += '<h3 style="margin-top:16px">Headers detectados</h3>';
-      html += '<table><tr><th>Idx</th><th>Header</th></tr>';
-      debugInfo.headers.slice(0, 30).forEach((h, i) => {
-        html += '<tr><td>' + i + '</td><td>' + escapeHtml(h || '(vacío)') + '</td></tr>';
-      });
-      html += '</table>';
-    }
-
-    if (debugInfo.columnMapping) {
-      html += '<h3 style="margin-top:16px">Mapeo de columnas</h3>';
-      html += '<table><tr><th>Campo</th><th>Índice</th><th>Status</th></tr>';
-      Object.entries(debugInfo.columnMapping).forEach(([k, v]) => {
-        const status = v >= 0 ? '<span class="ok">OK</span>' : '<span class="bad">NO ENCONTRADA</span>';
-        html += '<tr><td>' + k + '</td><td>' + v + '</td><td>' + status + '</td></tr>';
-      });
-      html += '</table>';
-    }
-
-    if (debugInfo.samples && debugInfo.samples.length) {
-      html += '<h3 style="margin-top:16px">Muestras</h3>';
-      debugInfo.samples.forEach((s) => {
-        html += '<p style="margin-top:12px"><strong>' + escapeHtml(s.nombre) + ' (B=' + escapeHtml(s.B) + '):</strong></p>';
-        html += '<pre>' + escapeHtml(JSON.stringify({
-          rawDeuda: s.rawDeuda,
-          rawPagado: s.rawPagado,
-          rawPendiente: s.rawPendiente,
-          parsed: s.parsed
-        }, null, 2)) + '</pre>';
-      });
-    }
-
-    el.innerHTML = html;
-  }
-
-  function populateFilters() {
-    const fillSelect = (id, values) => {
-      const sel = document.getElementById(id);
-      const current = sel.value;
-      sel.innerHTML = '<option value="">Todos</option>';
-      [...new Set(values.filter(Boolean))].sort().forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v; opt.textContent = v;
-        sel.appendChild(opt);
-      });
-      if ([...sel.options].some(o => o.value === current)) sel.value = current;
-    };
-    fillSelect('ff-f-mes', allData.map(d => d.B));
-    fillSelect('ff-f-proyecto', allData.map(d => d.PROYECTO));
-    fillSelect('ff-f-status', allData.map(d => d.Status));
-    fillSelect('ff-f-tipo', allData.map(d => d.TIPO_SUSCRIPCION));
-  }
-
-  function getFiltered() {
-    const fMes = document.getElementById('ff-f-mes').value;
-    const fProy = document.getElementById('ff-f-proyecto').value;
-    const fStatus = document.getElementById('ff-f-status').value;
-    const fTipo = document.getElementById('ff-f-tipo').value;
-    const fSearch = normalize(document.getElementById('ff-f-search').value);
-    return allData.filter(d => {
-      if (fMes && d.B !== fMes) return false;
-      if (fProy && d.PROYECTO !== fProy) return false;
-      if (fStatus && d.Status !== fStatus) return false;
-      if (fTipo && d.TIPO_SUSCRIPCION !== fTipo) return false;
-      if (fSearch && !normalize(d.NOMBRE).includes(fSearch)) return false;
-      return true;
-    });
-  }
-
-  function isPortero(d) {
-    const t = d.TIPO_JUGADOR;
-    return t === 'PORTERO' || t === 'PORTERA' || t.startsWith('PORTER');
-  }
-
-  function render() {
-    const data = getFiltered();
-    const jugadores = data.filter(d => !isPortero(d));
-    const porteros = data.filter(isPortero);
-    const totalPagado = data.reduce((s,d) => s + d.TOTAL_PAGADO, 0);
-    const totalPendiente = data.reduce((s,d) => s + d.MONTO_PENDIENTE, 0);
-    const totalDeuda = data.reduce((s,d) => s + d.DEUDA, 0);
-    document.getElementById('kpi-total').textContent = data.length;
-    document.getElementById('kpi-total-sub').textContent = jugadores.length + ' jugadores · ' + porteros.length + ' porter@s';
-    document.getElementById('kpi-pagado').textContent = fmtQ(totalPagado);
-    document.getElementById('kpi-pendiente').textContent = fmtQ(totalPendiente);
-    document.getElementById('kpi-deuda').textContent = fmtQ(totalDeuda);
-    renderTable('jugadores', jugadores);
-    renderTable('porteros', porteros);
-  }
-
-  function renderTable(kind, data) {
-    const sortInfo = sortState[kind];
-    if (sortInfo.key) {
-      data = [...data].sort((a,b) => {
-        const va = a[sortInfo.key], vb = b[sortInfo.key];
-        if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * sortInfo.dir;
-        return String(va).localeCompare(String(vb)) * sortInfo.dir;
-      });
-    }
-    const tbody = document.getElementById('ff-tbody-' + kind);
-    const tfoot = document.getElementById('ff-tfoot-' + kind);
-    document.getElementById('ff-count-' + kind).textContent = data.length;
-    if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="ff-empty">Sin registros</td></tr>';
-      tfoot.innerHTML = '';
-      return;
-    }
-    const statusClass = (s) => normalize(s).replace(/[^A-Z]/g,'') || 'NULL';
-    tbody.innerHTML = data.map((d,i) => {
-      const rowClass = d.DEUDA > 0 ? 'has-deuda' : (d.MONTO_PENDIENTE > 0 ? 'has-pendiente' : '');
-      return '<tr class="' + rowClass + '">' +
-        '<td class="ff-name">' + (i+1) + '. ' + escapeHtml(d.NOMBRE) + '</td>' +
-        '<td>' + escapeHtml(d.TIPO_SUSCRIPCION) + '</td>' +
-        '<td>' + escapeHtml(d.PROYECTO) + '</td>' +
-        '<td>' + escapeHtml(d.FECHA_REINSCRIPCION) + '</td>' +
-        '<td>' + (d.Status ? '<span class="ff-status ' + statusClass(d.Status) + '">' + escapeHtml(d.Status) + '</span>' : '') + '</td>' +
-        '<td class="ff-num ' + (d.DEUDA > 0 ? 'red' : '') + '">' + (d.DEUDA > 0 ? fmtQ(d.DEUDA) : '—') + '</td>' +
-        '<td class="ff-num ' + (d.TOTAL_PAGADO > 0 ? 'green' : '') + '">' + (d.TOTAL_PAGADO > 0 ? fmtQ(d.TOTAL_PAGADO) : '—') + '</td>' +
-        '<td class="ff-num ' + (d.MONTO_PENDIENTE > 0 ? 'amber' : '') + '">' + (d.MONTO_PENDIENTE > 0 ? fmtQ(d.MONTO_PENDIENTE) : '—') + '</td>' +
-        '</tr>';
-    }).join('');
-    const sumDeuda = data.reduce((s,d) => s + d.DEUDA, 0);
-    const sumPagado = data.reduce((s,d) => s + d.TOTAL_PAGADO, 0);
-    const sumPendiente = data.reduce((s,d) => s + d.MONTO_PENDIENTE, 0);
-    tfoot.innerHTML = '<tr class="ff-tfoot"><td colspan="5" class="label">Total · ' + data.length + '</td>' +
-      '<td class="ff-num">' + fmtQ(sumDeuda) + '</td>' +
-      '<td class="ff-num">' + fmtQ(sumPagado) + '</td>' +
-      '<td class="ff-num">' + fmtQ(sumPendiente) + '</td></tr>';
-  }
-
-  document.getElementById('ff-connect-btn').addEventListener('click', () => {
-    const url = document.getElementById('ff-sheet-url').value.trim();
-    if (!url) return;
-    const config = parseSheetUrl(url);
-    if (!config) {
-      document.getElementById('ff-error-box').innerHTML = '<div class="ff-error"><strong>Link inválido</strong></div>';
-      return;
-    }
-    loadData(config);
-  });
-
-  document.getElementById('ff-refresh-btn').addEventListener('click', () => {
-    if (currentConfig) loadData(currentConfig);
-    else document.getElementById('ff-setup').classList.remove('ff-hidden');
-  });
-
-  document.getElementById('ff-config-btn').addEventListener('click', () => {
-    document.getElementById('ff-setup').classList.toggle('ff-hidden');
-  });
-
-  document.getElementById('ff-debug-btn').addEventListener('click', () => {
-    document.getElementById('ff-debug').classList.toggle('ff-hidden');
-    updateDebugView();
-  });
-
-  ['ff-f-mes','ff-f-proyecto','ff-f-status','ff-f-tipo','ff-f-search'].forEach(id => {
-    document.getElementById(id).addEventListener('input', render);
-  });
-
-  ['jugadores','porteros'].forEach(kind => {
-    document.querySelectorAll('#ff-table-' + kind + ' thead th').forEach(th => {
-      th.addEventListener('click', () => {
-        const key = th.dataset.sort;
-        const cur = sortState[kind];
-        if (cur.key === key) cur.dir *= -1;
-        else { cur.key = key; cur.dir = 1; }
-        render();
-      });
-    });
-  });
-
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    try { loadData(JSON.parse(saved)); } catch(e) {}
-  } else {
-    document.getElementById('ff-setup').classList.remove('ff-hidden');
-  }
-})();
-</script>
+</body>
+</html>
