@@ -304,6 +304,23 @@
       </div>
 
       <div class="ff-filter">
+        <label>Solvencia</label>
+        <div class="ff-ms" id="ms-solvencia">
+          <button class="ff-ms-btn" type="button">
+            <span class="ff-ms-label">Todos</span>
+            <span class="ff-ms-arrow">▾</span>
+          </button>
+          <div class="ff-ms-panel">
+            <div class="ff-ms-actions">
+              <button class="ff-ms-action" data-action="all">Todos</button>
+              <button class="ff-ms-action" data-action="none">Ninguno</button>
+            </div>
+            <div class="ff-ms-items"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ff-filter">
         <label>Tipo Suscripción</label>
         <div class="ff-ms" id="ms-tipo">
           <button class="ff-ms-btn" type="button">
@@ -391,7 +408,7 @@
 
   // ── Multi-select state ──
   // Each key maps to a Set of selected values. Empty Set = "Todos".
-  const msState = { mes: new Set(), proyecto: new Set(), status: new Set(), tipo: new Set() };
+  const msState = { mes: new Set(), proyecto: new Set(), status: new Set(), solvencia: new Set(), tipo: new Set() };
 
   // ── Multi-select helpers ──
   function msGetSelected(key) { return msState[key]; }
@@ -606,6 +623,7 @@
       if (allData.length === 0) throw new Error('No se encontraron filas válidas con NOMBRE y PROYECTO.');
 
       populateFilters();
+      autoSelectCurrentMonth();
       render();
       updateDebugView();
       dash.classList.remove('ff-hidden');
@@ -625,27 +643,46 @@
 
   // ── Populate filters ──
   function populateFilters() {
-    msFillOptions('mes',     allData.map(d => d.B));
-    msFillOptions('proyecto',allData.map(d => d.PROYECTO));
-    msFillOptions('status',  allData.map(d => d.Status));
-    msFillOptions('tipo',    allData.map(d => d.TIPO_SUSCRIPCION));
+    msFillOptions('mes',      allData.map(d => d.B));
+    msFillOptions('proyecto', allData.map(d => d.PROYECTO));
+    msFillOptions('status',   allData.map(d => d.Status));
+    msFillOptions('solvencia',['Solvente', 'Insolvente']);
+    msFillOptions('tipo',     allData.map(d => d.TIPO_SUSCRIPCION));
+  }
+
+  function autoSelectCurrentMonth() {
+    const MESES = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+    const now = new Date();
+    const mesActual = MESES[now.getMonth()];
+    const anioActual = String(now.getFullYear());
+    const todos = [...new Set(allData.map(d => d.B).filter(Boolean))];
+    const match = todos.find(b => {
+      const n = normalize(b);
+      return n.includes(mesActual) && n.includes(anioActual);
+    });
+    if (!match) return;
+    msState.mes.add(match);
+    const container = document.getElementById('ms-mes');
+    container.querySelectorAll('.ff-ms-items input[type="checkbox"]').forEach(cb => {
+      cb.checked = cb.value === match;
+    });
+    msUpdateBtn('mes');
   }
 
   // ── Filter logic ──
+  function getSolvencia(d) {
+    return (d.DEUDA === 0 && d.MONTO_PENDIENTE === 0) ? 'Solvente' : 'Insolvente';
+  }
+
   function getFiltered() {
     const fSearch = normalize(document.getElementById('ff-f-search').value);
-    const sel = {
-      mes:      msState.mes,
-      proyecto: msState.proyecto,
-      status:   msState.status,
-      tipo:     msState.tipo,
-    };
     return allData.filter(d => {
-      if (sel.mes.size     > 0 && !sel.mes.has(d.B))               return false;
-      if (sel.proyecto.size > 0 && !sel.proyecto.has(d.PROYECTO))  return false;
-      if (sel.status.size  > 0 && !sel.status.has(d.Status))       return false;
-      if (sel.tipo.size    > 0 && !sel.tipo.has(d.TIPO_SUSCRIPCION)) return false;
-      if (fSearch && !normalize(d.NOMBRE).includes(fSearch))        return false;
+      if (msState.mes.size       > 0 && !msState.mes.has(d.B))                    return false;
+      if (msState.proyecto.size  > 0 && !msState.proyecto.has(d.PROYECTO))        return false;
+      if (msState.status.size    > 0 && !msState.status.has(d.Status))            return false;
+      if (msState.solvencia.size > 0 && !msState.solvencia.has(getSolvencia(d)))  return false;
+      if (msState.tipo.size      > 0 && !msState.tipo.has(d.TIPO_SUSCRIPCION))    return false;
+      if (fSearch && !normalize(d.NOMBRE).includes(fSearch))                       return false;
       return true;
     });
   }
@@ -743,7 +780,7 @@
   });
 
   // Init multi-select toggles
-  ['mes','proyecto','status','tipo'].forEach(msSetupToggle);
+  ['mes','proyecto','status','solvencia','tipo'].forEach(msSetupToggle);
 
   loadData();
 })();
