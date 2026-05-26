@@ -34,6 +34,7 @@
       padding: 24px;
     }
 
+    /* ── Header ── */
     .ff-header {
       background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
       color: white;
@@ -51,13 +52,7 @@
       background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
       pointer-events: none;
     }
-    .ff-header h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 38px;
-      letter-spacing: 2px;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
+    .ff-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 38px; letter-spacing: 2px; line-height: 1; margin-bottom: 6px; }
     .ff-header h1 span { color: var(--blue-light); }
     .ff-header p { font-size: 13px; opacity: 0.7; letter-spacing: 0.5px; }
     .ff-header-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
@@ -75,6 +70,7 @@
     .ff-btn.secondary:hover { background: rgba(255,255,255,0.2); }
     .ff-btn.debug { background: var(--amber); }
 
+    /* ── Debug ── */
     .ff-debug {
       background: #1a1a2e; color: #e0e0e0;
       border-radius: 12px; padding: 20px; margin-bottom: 20px;
@@ -90,35 +86,101 @@
     .ff-debug td, .ff-debug th { padding: 4px 8px; border-bottom: 1px solid #333; text-align: left; }
     .ff-debug th { color: var(--amber); }
 
+    /* ── Filtros ── */
     .ff-filters {
       background: var(--card); border-radius: 16px; padding: 20px 24px;
       margin-bottom: 20px; display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 16px; border: 1px solid var(--border);
     }
-    .ff-filter label {
+    .ff-filter > label {
       display: block; font-size: 10px; font-weight: 700;
       text-transform: uppercase; letter-spacing: 1.2px;
       color: var(--text-muted); margin-bottom: 6px;
     }
-    .ff-filter select, .ff-filter input {
+    .ff-filter input[type="text"] {
       width: 100%; padding: 10px 12px;
       border: 1px solid var(--border); border-radius: 8px;
       font-family: 'Montserrat', sans-serif; font-size: 13px; background: white;
     }
 
-    .ff-kpis {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px; margin-bottom: 20px;
+    /* Multi-select custom dropdown */
+    .ff-ms { position: relative; }
+    .ff-ms-btn {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: white; cursor: pointer;
+      font-family: 'Montserrat', sans-serif; font-size: 13px;
+      color: var(--text); text-align: left;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; transition: border-color 0.15s;
+      white-space: nowrap; overflow: hidden;
     }
-    .ff-kpi {
-      background: var(--card); border-radius: 12px; padding: 20px;
-      border: 1px solid var(--border); position: relative; overflow: hidden;
+    .ff-ms-btn:hover { border-color: var(--blue); }
+    .ff-ms-btn.active { border-color: var(--blue); }
+    .ff-ms-label { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+    .ff-ms-badge {
+      background: var(--blue); color: white;
+      border-radius: 10px; font-size: 10px; font-weight: 700;
+      padding: 1px 7px; flex-shrink: 0;
     }
-    .ff-kpi::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 4px; background: var(--blue);
+    .ff-ms-arrow { font-size: 10px; color: var(--text-muted); flex-shrink: 0; transition: transform 0.2s; }
+    .ff-ms.open .ff-ms-arrow { transform: rotate(180deg); }
+    .ff-ms.open .ff-ms-btn { border-color: var(--blue); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+    .ff-ms-panel {
+      display: none;
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 100;
+      background: white; border: 1px solid var(--blue);
+      border-top: none; border-radius: 0 0 8px 8px;
+      max-height: 220px; overflow-y: auto;
+      box-shadow: 0 8px 24px rgba(10,22,40,0.1);
     }
+    .ff-ms.open .ff-ms-panel { display: block; }
+
+    .ff-ms-search {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ff-ms-search input {
+      width: 100%; padding: 6px 10px;
+      border: 1px solid var(--border); border-radius: 6px;
+      font-family: 'Montserrat', sans-serif; font-size: 12px;
+      outline: none;
+    }
+    .ff-ms-search input:focus { border-color: var(--blue); }
+
+    .ff-ms-actions {
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .ff-ms-action {
+      flex: 1; padding: 6px 10px;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif; font-size: 10px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-muted); transition: color 0.15s, background 0.15s;
+    }
+    .ff-ms-action:hover { color: var(--blue); background: var(--gray-50); }
+    .ff-ms-action:first-child { border-right: 1px solid var(--border); }
+
+    .ff-ms-option {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; cursor: pointer;
+      font-size: 13px; transition: background 0.1s;
+      user-select: none;
+    }
+    .ff-ms-option:hover { background: var(--gray-50); }
+    .ff-ms-option input[type="checkbox"] {
+      width: 15px; height: 15px; accent-color: var(--blue);
+      cursor: pointer; flex-shrink: 0;
+    }
+    .ff-ms-option span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ── KPIs ── */
+    .ff-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .ff-kpi { background: var(--card); border-radius: 12px; padding: 20px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+    .ff-kpi::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--blue); }
     .ff-kpi.deuda::before { background: var(--red); }
     .ff-kpi.pagado::before { background: var(--green); }
     .ff-kpi.pendiente::before { background: var(--amber); }
@@ -126,15 +188,9 @@
     .ff-kpi-value { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--navy); line-height: 1; letter-spacing: 1px; }
     .ff-kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
-    .ff-section {
-      background: var(--card); border-radius: 16px; margin-bottom: 20px;
-      overflow: hidden; border: 1px solid var(--border);
-    }
-    .ff-section-header {
-      padding: 18px 24px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--gray-50);
-    }
+    /* ── Tablas ── */
+    .ff-section { background: var(--card); border-radius: 16px; margin-bottom: 20px; overflow: hidden; border: 1px solid var(--border); }
+    .ff-section-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--gray-50); }
     .ff-section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; color: var(--navy); }
     .ff-count { background: var(--navy); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
     .ff-table-wrap { overflow-x: auto; max-height: 500px; overflow-y: auto; }
@@ -155,10 +211,7 @@
     .ff-num.amber { color: var(--amber); }
     .ff-name { font-weight: 600; color: var(--navy); }
 
-    .ff-status {
-      display: inline-block; padding: 3px 10px; border-radius: 12px;
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-    }
+    .ff-status { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
     .ff-status.SIGUE { background: rgba(16, 185, 129, 0.12); color: #059669; }
     .ff-status.RETOMA { background: rgba(59, 130, 246, 0.12); color: var(--blue-dark); }
     .ff-status.BAJA { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
@@ -168,17 +221,9 @@
     .ff-tfoot td { background: var(--navy); color: white; padding: 14px 16px; font-weight: 700; border: none; }
     .ff-tfoot td.label { text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
     .ff-empty { padding: 40px; text-align: center; color: var(--text-muted); font-size: 13px; }
-    .ff-error {
-      background: rgba(239, 68, 68, 0.08); border: 1px solid var(--red);
-      color: #b91c1c; padding: 16px 20px; border-radius: 12px;
-      margin-bottom: 16px; font-size: 13px;
-    }
+    .ff-error { background: rgba(239, 68, 68, 0.08); border: 1px solid var(--red); color: #b91c1c; padding: 16px 20px; border-radius: 12px; margin-bottom: 16px; font-size: 13px; }
     .ff-loading { text-align: center; padding: 60px; color: var(--text-muted); font-size: 14px; }
-    .ff-loading::after {
-      content: ''; display: inline-block; width: 16px; height: 16px;
-      border: 2px solid var(--border); border-top-color: var(--blue);
-      border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 10px;
-    }
+    .ff-loading::after { content: ''; display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 10px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .ff-info { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
     .ff-hidden { display: none !important; }
@@ -206,11 +251,80 @@
 
   <div id="ff-dashboard" class="ff-hidden">
     <div class="ff-filters">
-      <div class="ff-filter"><label>Mes (B)</label><select id="ff-f-mes"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Proyecto</label><select id="ff-f-proyecto"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Status</label><select id="ff-f-status"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Tipo Suscripción</label><select id="ff-f-tipo"><option value="">Todos</option></select></div>
-      <div class="ff-filter"><label>Buscar nombre</label><input type="text" id="ff-f-search" placeholder="Ej: Yohana" /></div>
+
+      <div class="ff-filter">
+        <label>Mes</label>
+        <div class="ff-ms" id="ms-mes">
+          <button class="ff-ms-btn" type="button">
+            <span class="ff-ms-label">Todos</span>
+            <span class="ff-ms-arrow">▾</span>
+          </button>
+          <div class="ff-ms-panel">
+            <div class="ff-ms-actions">
+              <button class="ff-ms-action" data-action="all">Todos</button>
+              <button class="ff-ms-action" data-action="none">Ninguno</button>
+            </div>
+            <div class="ff-ms-items"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ff-filter">
+        <label>Proyecto</label>
+        <div class="ff-ms" id="ms-proyecto">
+          <button class="ff-ms-btn" type="button">
+            <span class="ff-ms-label">Todos</span>
+            <span class="ff-ms-arrow">▾</span>
+          </button>
+          <div class="ff-ms-panel">
+            <div class="ff-ms-actions">
+              <button class="ff-ms-action" data-action="all">Todos</button>
+              <button class="ff-ms-action" data-action="none">Ninguno</button>
+            </div>
+            <div class="ff-ms-items"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ff-filter">
+        <label>Status</label>
+        <div class="ff-ms" id="ms-status">
+          <button class="ff-ms-btn" type="button">
+            <span class="ff-ms-label">Todos</span>
+            <span class="ff-ms-arrow">▾</span>
+          </button>
+          <div class="ff-ms-panel">
+            <div class="ff-ms-actions">
+              <button class="ff-ms-action" data-action="all">Todos</button>
+              <button class="ff-ms-action" data-action="none">Ninguno</button>
+            </div>
+            <div class="ff-ms-items"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ff-filter">
+        <label>Tipo Suscripción</label>
+        <div class="ff-ms" id="ms-tipo">
+          <button class="ff-ms-btn" type="button">
+            <span class="ff-ms-label">Todos</span>
+            <span class="ff-ms-arrow">▾</span>
+          </button>
+          <div class="ff-ms-panel">
+            <div class="ff-ms-actions">
+              <button class="ff-ms-action" data-action="all">Todos</button>
+              <button class="ff-ms-action" data-action="none">Ninguno</button>
+            </div>
+            <div class="ff-ms-items"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ff-filter">
+        <label>Buscar nombre</label>
+        <input type="text" id="ff-f-search" placeholder="Ej: Yohana" />
+      </div>
+
     </div>
 
     <div class="ff-kpis">
@@ -275,15 +389,106 @@
   let debugInfo = {};
   let sortState = { jugadores: { key: null, dir: 1 }, porteros: { key: null, dir: 1 } };
 
-  function normalize(s) {
-    return (s || '').toString().trim().toUpperCase().replace(/\s+/g, ' ');
+  // ── Multi-select state ──
+  // Each key maps to a Set of selected values. Empty Set = "Todos".
+  const msState = { mes: new Set(), proyecto: new Set(), status: new Set(), tipo: new Set() };
+
+  // ── Multi-select helpers ──
+  function msGetSelected(key) { return msState[key]; }
+
+  function msUpdateBtn(key) {
+    const container = document.getElementById('ms-' + key);
+    const btn = container.querySelector('.ff-ms-btn');
+    const label = btn.querySelector('.ff-ms-label');
+    const sel = msState[key];
+    const count = sel.size;
+    // remove old badge
+    const oldBadge = btn.querySelector('.ff-ms-badge');
+    if (oldBadge) oldBadge.remove();
+    if (count === 0) {
+      label.textContent = 'Todos';
+      btn.classList.remove('active');
+    } else if (count === 1) {
+      label.textContent = [...sel][0];
+      btn.classList.add('active');
+    } else {
+      label.textContent = count + ' seleccionados';
+      const badge = document.createElement('span');
+      badge.className = 'ff-ms-badge';
+      badge.textContent = count;
+      btn.insertBefore(badge, btn.querySelector('.ff-ms-arrow'));
+      btn.classList.add('active');
+    }
   }
+
+  function msFillOptions(key, values) {
+    const container = document.getElementById('ms-' + key);
+    const itemsEl = container.querySelector('.ff-ms-items');
+    const unique = [...new Set(values.filter(Boolean))].sort();
+    itemsEl.innerHTML = '';
+    unique.forEach(v => {
+      const lbl = document.createElement('label');
+      lbl.className = 'ff-ms-option';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = v;
+      cb.checked = msState[key].size === 0 || msState[key].has(v);
+      cb.addEventListener('change', () => {
+        if (cb.checked) msState[key].add(v);
+        else msState[key].delete(v);
+        msUpdateBtn(key);
+        render();
+      });
+      const span = document.createElement('span');
+      span.textContent = v;
+      lbl.appendChild(cb);
+      lbl.appendChild(span);
+      itemsEl.appendChild(lbl);
+    });
+  }
+
+  function msSetupToggle(key) {
+    const container = document.getElementById('ms-' + key);
+    const btn = container.querySelector('.ff-ms-btn');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = container.classList.contains('open');
+      closeAllMs();
+      if (!isOpen) container.classList.add('open');
+    });
+    container.querySelector('.ff-ms-panel').addEventListener('click', e => e.stopPropagation());
+    container.querySelectorAll('.ff-ms-action').forEach(actionBtn => {
+      actionBtn.addEventListener('click', () => {
+        const action = actionBtn.dataset.action;
+        const itemsEl = container.querySelector('.ff-ms-items');
+        const checkboxes = itemsEl.querySelectorAll('input[type="checkbox"]');
+        if (action === 'all') {
+          msState[key].clear();
+          checkboxes.forEach(cb => { cb.checked = true; });
+        } else {
+          checkboxes.forEach(cb => { cb.checked = false; });
+          // When none selected, treat same as all (no filter)
+          msState[key].clear();
+        }
+        msUpdateBtn(key);
+        render();
+      });
+    });
+  }
+
+  function closeAllMs() {
+    document.querySelectorAll('.ff-ms.open').forEach(el => el.classList.remove('open'));
+  }
+
+  document.addEventListener('click', closeAllMs);
+
+  // ── Utils ──
+  function normalize(s) { return (s || '').toString().trim().toUpperCase().replace(/\s+/g, ' '); }
 
   function toNum(v) {
     if (v === null || v === undefined || v === '') return 0;
     if (typeof v === 'number') return isNaN(v) ? 0 : v;
-    const cleaned = String(v).replace(/[^0-9.\-]/g, '');
-    const n = parseFloat(cleaned);
+    const n = parseFloat(String(v).replace(/[^0-9.\-]/g, ''));
     return isNaN(n) ? 0 : n;
   }
 
@@ -314,6 +519,7 @@
     return rows;
   }
 
+  // ── Load data ──
   async function loadData() {
     const loading = document.getElementById('ff-loading');
     const dash = document.getElementById('ff-dashboard');
@@ -333,26 +539,18 @@
       const rows = parseCSV(text);
       debugInfo.totalRows = rows.length;
       debugInfo.totalCols = rows[0] ? rows[0].length : 0;
-
       if (rows.length === 0) throw new Error('CSV vacío.');
 
       let headerRowIdx = -1, headers = [];
       for (let i = 0; i < Math.min(20, rows.length); i++) {
         const cells = rows[i].map(c => normalize(c));
         if (cells.includes('NOMBRE') && cells.some(c => c && c.includes('TIPO') && c.includes('JUGADOR'))) {
-          headerRowIdx = i;
-          headers = cells;
-          break;
+          headerRowIdx = i; headers = cells; break;
         }
       }
-
       debugInfo.headerRowIdx = headerRowIdx;
       debugInfo.headers = headers;
-
-      if (headerRowIdx === -1) {
-        debugInfo.first5Rows = rows.slice(0, 5);
-        throw new Error('No se encontró fila de headers. Click en Debug para ver la estructura.');
-      }
+      if (headerRowIdx === -1) { debugInfo.first5Rows = rows.slice(0, 5); throw new Error('No se encontró fila de headers. Click en Debug para ver la estructura.'); }
 
       const colIdx = (...names) => {
         for (const n of names) {
@@ -375,20 +573,18 @@
         TOTAL_PAGADO: colIdx('TOTAL PAGADO', 'TOTALPAGADO'),
         MONTO_PENDIENTE: colIdx('MONTO PENDIENTE', 'MONTOPENDIENTE')
       };
-
       debugInfo.columnMapping = idx;
+
       allData = [];
       const samples = [];
-
       for (let i = headerRowIdx + 1; i < rows.length; i++) {
         const r = rows[i];
         if (!r) continue;
-        const getCell = (cIdx) => (cIdx >= 0 && cIdx < r.length) ? (r[cIdx] || '').trim() : '';
+        const getCell = ci => (ci >= 0 && ci < r.length) ? (r[ci] || '').trim() : '';
         const nombre = getCell(idx.NOMBRE);
         if (!nombre) continue;
         const proyecto = getCell(idx.PROYECTO);
         if (!proyecto) continue;
-
         const item = {
           B: getCell(idx.B),
           NOMBRE: nombre,
@@ -401,18 +597,12 @@
           TOTAL_PAGADO: toNum(getCell(idx.TOTAL_PAGADO)),
           MONTO_PENDIENTE: toNum(getCell(idx.MONTO_PENDIENTE))
         };
-
-        if (samples.length < 3) {
-          samples.push({ nombre, rawDeuda: getCell(idx.DEUDA), rawPagado: getCell(idx.TOTAL_PAGADO), rawPendiente: getCell(idx.MONTO_PENDIENTE), parsed: { DEUDA: item.DEUDA, TOTAL_PAGADO: item.TOTAL_PAGADO, MONTO_PENDIENTE: item.MONTO_PENDIENTE } });
-        }
-
+        if (samples.length < 3) samples.push({ nombre, rawDeuda: getCell(idx.DEUDA), rawPagado: getCell(idx.TOTAL_PAGADO), rawPendiente: getCell(idx.MONTO_PENDIENTE), parsed: { DEUDA: item.DEUDA, TOTAL_PAGADO: item.TOTAL_PAGADO, MONTO_PENDIENTE: item.MONTO_PENDIENTE } });
         allData.push(item);
       }
-
       debugInfo.samples = samples;
       debugInfo.totalRecords = allData.length;
       debugInfo.totalSumPagado = allData.reduce((s,d) => s + d.TOTAL_PAGADO, 0);
-
       if (allData.length === 0) throw new Error('No se encontraron filas válidas con NOMBRE y PROYECTO.');
 
       populateFilters();
@@ -433,79 +623,35 @@
     }
   }
 
-  function updateDebugView() {
-    const el = document.getElementById('ff-debug');
-    let html = '<h3>Diagnóstico · Suscripciones</h3>';
-    html += '<p><span class="key">URL:</span> <span style="color:#aaa">' + escapeHtml(debugInfo.url || '?') + '</span></p>';
-    html += '<p><span class="key">Filas totales:</span> ' + (debugInfo.totalRows || 0) + ' · <span class="key">Columnas:</span> ' + (debugInfo.totalCols || 0) + '</p>';
-    html += '<p><span class="key">Fila headers:</span> ' + (debugInfo.headerRowIdx >= 0 ? '<span class="ok">índice ' + debugInfo.headerRowIdx + '</span>' : '<span class="bad">NO ENCONTRADA</span>') + '</p>';
-    html += '<p><span class="key">Registros válidos:</span> ' + (debugInfo.totalRecords || 0) + '</p>';
-
-    if (debugInfo.headers && debugInfo.headers.length) {
-      html += '<h3 style="margin-top:16px">Headers</h3><table><tr><th>Idx</th><th>Header</th></tr>';
-      debugInfo.headers.slice(0, 30).forEach((h, i) => {
-        html += '<tr><td>' + i + '</td><td>' + escapeHtml(h || '(vacío)') + '</td></tr>';
-      });
-      html += '</table>';
-    }
-
-    if (debugInfo.columnMapping) {
-      html += '<h3 style="margin-top:16px">Mapeo de columnas</h3><table><tr><th>Campo</th><th>Índice</th><th>Status</th></tr>';
-      Object.entries(debugInfo.columnMapping).forEach(([k, v]) => {
-        html += '<tr><td>' + k + '</td><td>' + v + '</td><td>' + (v >= 0 ? '<span class="ok">OK</span>' : '<span class="bad">NO ENCONTRADA</span>') + '</td></tr>';
-      });
-      html += '</table>';
-    }
-
-    if (debugInfo.samples && debugInfo.samples.length) {
-      html += '<h3 style="margin-top:16px">Muestras</h3>';
-      debugInfo.samples.forEach(s => {
-        html += '<p style="margin-top:12px"><strong>' + escapeHtml(s.nombre) + '</strong></p>';
-        html += '<pre>' + escapeHtml(JSON.stringify({ rawDeuda: s.rawDeuda, rawPagado: s.rawPagado, rawPendiente: s.rawPendiente, parsed: s.parsed }, null, 2)) + '</pre>';
-      });
-    }
-
-    el.innerHTML = html;
-  }
-
+  // ── Populate filters ──
   function populateFilters() {
-    const fillSelect = (id, values) => {
-      const sel = document.getElementById(id);
-      const current = sel.value;
-      sel.innerHTML = '<option value="">Todos</option>';
-      [...new Set(values.filter(Boolean))].sort().forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v; opt.textContent = v;
-        sel.appendChild(opt);
-      });
-      if ([...sel.options].some(o => o.value === current)) sel.value = current;
-    };
-    fillSelect('ff-f-mes', allData.map(d => d.B));
-    fillSelect('ff-f-proyecto', allData.map(d => d.PROYECTO));
-    fillSelect('ff-f-status', allData.map(d => d.Status));
-    fillSelect('ff-f-tipo', allData.map(d => d.TIPO_SUSCRIPCION));
+    msFillOptions('mes',     allData.map(d => d.B));
+    msFillOptions('proyecto',allData.map(d => d.PROYECTO));
+    msFillOptions('status',  allData.map(d => d.Status));
+    msFillOptions('tipo',    allData.map(d => d.TIPO_SUSCRIPCION));
   }
 
+  // ── Filter logic ──
   function getFiltered() {
-    const fMes = document.getElementById('ff-f-mes').value;
-    const fProy = document.getElementById('ff-f-proyecto').value;
-    const fStatus = document.getElementById('ff-f-status').value;
-    const fTipo = document.getElementById('ff-f-tipo').value;
     const fSearch = normalize(document.getElementById('ff-f-search').value);
+    const sel = {
+      mes:      msState.mes,
+      proyecto: msState.proyecto,
+      status:   msState.status,
+      tipo:     msState.tipo,
+    };
     return allData.filter(d => {
-      if (fMes && d.B !== fMes) return false;
-      if (fProy && d.PROYECTO !== fProy) return false;
-      if (fStatus && d.Status !== fStatus) return false;
-      if (fTipo && d.TIPO_SUSCRIPCION !== fTipo) return false;
-      if (fSearch && !normalize(d.NOMBRE).includes(fSearch)) return false;
+      if (sel.mes.size     > 0 && !sel.mes.has(d.B))               return false;
+      if (sel.proyecto.size > 0 && !sel.proyecto.has(d.PROYECTO))  return false;
+      if (sel.status.size  > 0 && !sel.status.has(d.Status))       return false;
+      if (sel.tipo.size    > 0 && !sel.tipo.has(d.TIPO_SUSCRIPCION)) return false;
+      if (fSearch && !normalize(d.NOMBRE).includes(fSearch))        return false;
       return true;
     });
   }
 
-  function isPortero(d) {
-    const t = d.TIPO_JUGADOR;
-    return t === 'PORTERO' || t === 'PORTERA' || t.startsWith('PORTER');
-  }
+  // ── Render ──
+  function isPortero(d) { const t = d.TIPO_JUGADOR; return t === 'PORTERO' || t === 'PORTERA' || t.startsWith('PORTER'); }
 
   function render() {
     const data = getFiltered();
@@ -521,23 +667,19 @@
   }
 
   function renderTable(kind, data) {
-    const sortInfo = sortState[kind];
-    if (sortInfo.key) {
+    const si = sortState[kind];
+    if (si.key) {
       data = [...data].sort((a,b) => {
-        const va = a[sortInfo.key], vb = b[sortInfo.key];
-        if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * sortInfo.dir;
-        return String(va).localeCompare(String(vb)) * sortInfo.dir;
+        const va = a[si.key], vb = b[si.key];
+        if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * si.dir;
+        return String(va).localeCompare(String(vb)) * si.dir;
       });
     }
     const tbody = document.getElementById('ff-tbody-' + kind);
     const tfoot = document.getElementById('ff-tfoot-' + kind);
     document.getElementById('ff-count-' + kind).textContent = data.length;
-    if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="ff-empty">Sin registros</td></tr>';
-      tfoot.innerHTML = '';
-      return;
-    }
-    const statusClass = (s) => normalize(s).replace(/[^A-Z]/g,'') || 'NULL';
+    if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="ff-empty">Sin registros</td></tr>'; tfoot.innerHTML = ''; return; }
+    const statusClass = s => normalize(s).replace(/[^A-Z]/g,'') || 'NULL';
     tbody.innerHTML = data.map((d,i) => {
       const rowClass = d.DEUDA > 0 ? 'has-deuda' : (d.MONTO_PENDIENTE > 0 ? 'has-pendiente' : '');
       return '<tr class="' + rowClass + '">' +
@@ -551,37 +693,57 @@
         '<td class="ff-num ' + (d.MONTO_PENDIENTE > 0 ? 'amber' : '') + '">' + (d.MONTO_PENDIENTE > 0 ? fmtQ(d.MONTO_PENDIENTE) : '—') + '</td>' +
         '</tr>';
     }).join('');
-    const sumDeuda = data.reduce((s,d) => s + d.DEUDA, 0);
-    const sumPagado = data.reduce((s,d) => s + d.TOTAL_PAGADO, 0);
-    const sumPendiente = data.reduce((s,d) => s + d.MONTO_PENDIENTE, 0);
     tfoot.innerHTML = '<tr class="ff-tfoot"><td colspan="5" class="label">Total · ' + data.length + '</td>' +
-      '<td class="ff-num">' + fmtQ(sumDeuda) + '</td>' +
-      '<td class="ff-num">' + fmtQ(sumPagado) + '</td>' +
-      '<td class="ff-num">' + fmtQ(sumPendiente) + '</td></tr>';
+      '<td class="ff-num">' + fmtQ(data.reduce((s,d) => s + d.DEUDA, 0)) + '</td>' +
+      '<td class="ff-num">' + fmtQ(data.reduce((s,d) => s + d.TOTAL_PAGADO, 0)) + '</td>' +
+      '<td class="ff-num">' + fmtQ(data.reduce((s,d) => s + d.MONTO_PENDIENTE, 0)) + '</td></tr>';
   }
 
-  document.getElementById('ff-refresh-btn').addEventListener('click', loadData);
+  function updateDebugView() {
+    const el = document.getElementById('ff-debug');
+    let html = '<h3>Diagnóstico · Suscripciones</h3>';
+    html += '<p><span class="key">URL:</span> <span style="color:#aaa">' + escapeHtml(debugInfo.url || '?') + '</span></p>';
+    html += '<p><span class="key">Filas totales:</span> ' + (debugInfo.totalRows || 0) + ' · <span class="key">Columnas:</span> ' + (debugInfo.totalCols || 0) + '</p>';
+    html += '<p><span class="key">Fila headers:</span> ' + (debugInfo.headerRowIdx >= 0 ? '<span class="ok">índice ' + debugInfo.headerRowIdx + '</span>' : '<span class="bad">NO ENCONTRADA</span>') + '</p>';
+    html += '<p><span class="key">Registros válidos:</span> ' + (debugInfo.totalRecords || 0) + '</p>';
+    if (debugInfo.headers && debugInfo.headers.length) {
+      html += '<h3 style="margin-top:16px">Headers</h3><table><tr><th>Idx</th><th>Header</th></tr>';
+      debugInfo.headers.slice(0, 30).forEach((h, i) => { html += '<tr><td>' + i + '</td><td>' + escapeHtml(h || '(vacío)') + '</td></tr>'; });
+      html += '</table>';
+    }
+    if (debugInfo.columnMapping) {
+      html += '<h3 style="margin-top:16px">Mapeo</h3><table><tr><th>Campo</th><th>Índice</th><th>Status</th></tr>';
+      Object.entries(debugInfo.columnMapping).forEach(([k, v]) => { html += '<tr><td>' + k + '</td><td>' + v + '</td><td>' + (v >= 0 ? '<span class="ok">OK</span>' : '<span class="bad">NO ENCONTRADA</span>') + '</td></tr>'; });
+      html += '</table>';
+    }
+    if (debugInfo.samples && debugInfo.samples.length) {
+      html += '<h3 style="margin-top:16px">Muestras</h3>';
+      debugInfo.samples.forEach(s => { html += '<p style="margin-top:12px"><strong>' + escapeHtml(s.nombre) + '</strong></p><pre>' + escapeHtml(JSON.stringify({ rawDeuda: s.rawDeuda, rawPagado: s.rawPagado, rawPendiente: s.rawPendiente, parsed: s.parsed }, null, 2)) + '</pre>'; });
+    }
+    el.innerHTML = html;
+  }
 
+  // ── Event listeners ──
+  document.getElementById('ff-refresh-btn').addEventListener('click', loadData);
   document.getElementById('ff-debug-btn').addEventListener('click', () => {
     document.getElementById('ff-debug').classList.toggle('ff-hidden');
     updateDebugView();
   });
-
-  ['ff-f-mes','ff-f-proyecto','ff-f-status','ff-f-tipo','ff-f-search'].forEach(id => {
-    document.getElementById(id).addEventListener('input', render);
-  });
+  document.getElementById('ff-f-search').addEventListener('input', render);
 
   ['jugadores','porteros'].forEach(kind => {
     document.querySelectorAll('#ff-table-' + kind + ' thead th').forEach(th => {
       th.addEventListener('click', () => {
         const key = th.dataset.sort;
         const cur = sortState[kind];
-        if (cur.key === key) cur.dir *= -1;
-        else { cur.key = key; cur.dir = 1; }
+        if (cur.key === key) cur.dir *= -1; else { cur.key = key; cur.dir = 1; }
         render();
       });
     });
   });
+
+  // Init multi-select toggles
+  ['mes','proyecto','status','tipo'].forEach(msSetupToggle);
 
   loadData();
 })();
